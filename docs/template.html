@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$title$</title>
+<style>
+  @page {
+    size: A4;
+    margin: 2.5cm 2cm 2cm 2cm;
+    @bottom-center {
+      content: counter(page);
+      font-size: 10pt;
+      color: #666;
+    }
+  }
+  @page :first {
+    margin: 3cm 2.5cm;
+    @bottom-center { content: none; }
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1a1a1a;
+    max-width: 100%;
+  }
+
+  /* Title page */
+  .title-page {
+    text-align: center;
+    padding-top: 30%;
+    page-break-after: always;
+  }
+  .title-page h1 {
+    font-size: 28pt;
+    color: #1e40af;
+    margin-bottom: 0.5em;
+    border: none;
+  }
+  .title-page .subtitle {
+    font-size: 16pt;
+    color: #4b5563;
+    margin-bottom: 2em;
+  }
+  .title-page .meta {
+    font-size: 12pt;
+    color: #6b7280;
+    line-height: 2;
+  }
+  .title-page .tech-badges {
+    margin-top: 2em;
+  }
+  .title-page .badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: #1e40af;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 10pt;
+    margin: 3px;
+    border: 1px solid #bfdbfe;
+  }
+
+  /* Headings */
+  h1 {
+    font-size: 20pt;
+    color: #1e40af;
+    border-bottom: 2px solid #1e40af;
+    padding-bottom: 8px;
+    margin-top: 1.5em;
+    page-break-after: avoid;
+  }
+  h2 {
+    font-size: 16pt;
+    color: #1e3a5f;
+    margin-top: 1.3em;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #374151;
+    margin-top: 1em;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #4b5563;
+    margin-top: 0.8em;
+    page-break-after: avoid;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+  thead {
+    background: #1e40af;
+    color: white;
+  }
+  th {
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+  }
+  td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  tbody tr:nth-child(even) {
+    background: #f9fafb;
+  }
+
+  /* Code */
+  code {
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 9pt;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #dc2626;
+  }
+  pre {
+    background: #1f2937;
+    color: #e5e7eb;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 9pt;
+    line-height: 1.5;
+    overflow-x: auto;
+    page-break-inside: avoid;
+    margin: 1em 0;
+  }
+  pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+  }
+
+  /* Lists */
+  ul, ol {
+    padding-left: 1.5em;
+    margin: 0.5em 0;
+  }
+  li {
+    margin: 0.3em 0;
+  }
+
+  /* Blockquotes */
+  blockquote {
+    border-left: 4px solid #1e40af;
+    margin: 1em 0;
+    padding: 0.5em 1em;
+    background: #eff6ff;
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #374151;
+  }
+
+  /* Links */
+  a {
+    color: #1e40af;
+    text-decoration: none;
+  }
+
+  /* Horizontal rules */
+  hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 2em 0;
+  }
+
+  /* Checkboxes */
+  input[type="checkbox"] {
+    margin-right: 6px;
+  }
+
+  /* Page breaks before major sections */
+  h1 { page-break-before: always; }
+  h1:first-of-type { page-break-before: auto; }
+
+  /* Avoid orphans/widows */
+  p, li { orphans: 3; widows: 3; }
+
+  /* Comparison tables */
+  table.comparison th:first-child { width: 25%; }
+  table.comparison th:nth-child(2) { width: 30%; }
+  table.comparison th:nth-child(3) { width: 25%; }
+  table.comparison th:nth-child(4) { width: 20%; }
+</style>
+</head>
+<body>
+$body$
+</body>
+</html>

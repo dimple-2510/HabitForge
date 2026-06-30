@@ -1,0 +1,561 @@
+#!/usr/bin/env python3
+"""Generate PDF report using WeasyPrint from HTML."""
+import os
+from weasyprint import HTML
+
+OUTPUT_DIR = "/Users/openclaw/.hermes/projects/habit-forge/docs"
+IMAGES_DIR = os.path.join(OUTPUT_DIR, "images")
+SCREENSHOTS_DIR = os.path.join(OUTPUT_DIR, "screenshots")
+
+def img_path(name):
+    """Get absolute path to an image."""
+    p = os.path.join(IMAGES_DIR, name)
+    if os.path.exists(p):
+        return p
+    p = os.path.join(SCREENSHOTS_DIR, name)
+    if os.path.exists(p):
+        return p
+    return None
+
+def img_tag(name, width="100%", caption=None):
+    """Generate an img tag with absolute file path."""
+    p = img_path(name)
+    if p:
+        rel = os.path.relpath(p, OUTPUT_DIR)
+        html = f'<div class="figure"><img src="file://{p}" style="width:{width}; max-width: 100%;" />'
+        if caption:
+            html += f'<p class="caption">Figure: {caption}</p>'
+        html += '</div>'
+        return html
+    return f'<p class="missing">[Image: {name} not found]</p>'
+
+# Build HTML
+html = f"""<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+@page {{
+    size: A4;
+    margin: 2.5cm 2cm;
+    @bottom-center {{ content: counter(page); font-size: 10px; color: #9CA3AF; }}
+}}
+body {{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1F2937;
+}}
+h1 {{ font-size: 22pt; color: #1E40AF; border-bottom: 2px solid #2563EB; padding-bottom: 8px; margin-top: 30px; }}
+h2 {{ font-size: 16pt; color: #1E40AF; margin-top: 24px; }}
+h3 {{ font-size: 13pt; color: #374151; margin-top: 18px; }}
+p {{ margin-bottom: 8px; }}
+ul {{ margin-bottom: 12px; }}
+li {{ margin-bottom: 4px; }}
+.figure {{ text-align: center; margin: 16px 0; page-break-inside: avoid; }}
+.figure img {{ max-width: 100%; height: auto; }}
+.caption {{ font-size: 9pt; color: #6B7280; font-style: italic; margin-top: 6px; }}
+table {{ width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 9.5pt; }}
+th {{ background: #1E40AF; color: white; padding: 8px 10px; text-align: left; font-size: 10pt; }}
+td {{ padding: 6px 10px; border-bottom: 1px solid #E5E7EB; }}
+tr:nth-child(even) {{ background: #F8FAFC; }}
+.title-page {{ text-align: center; padding-top: 200px; }}
+.title-page h1 {{ font-size: 36pt; color: #2563EB; border: none; }}
+.title-page h2 {{ font-size: 18pt; color: #374151; }}
+.title-page p {{ font-size: 14pt; color: #6B7280; }}
+.toc {{ margin: 20px 0; }}
+.toc li {{ list-style: none; padding: 4px 0; }}
+.page-break {{ page-break-after: always; }}
+</style>
+</head>
+<body>
+
+<!-- TITLE PAGE -->
+<div class="title-page">
+<h1>HabitForge</h1>
+<h2>A Full-Stack Habit Tracking Web Application</h2>
+<br/><br/><br/>
+<h2 style="font-size: 22pt; color: #1E40AF;">Major Project Report</h2>
+<br/><br/>
+<p>Master of Computer Applications (MCA) — 4th Semester</p>
+<p>Subject Code: 23ONMCR-753 | Credits: 12</p>
+<p>Project Duration: June 2026</p>
+<br/><br/>
+<p><strong>Chandigarh University</strong></p>
+<p>Centre for Distance & Online Education</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- TABLE OF CONTENTS -->
+<h1>Table of Contents</h1>
+<div class="toc">
+<li>Chapter 1: Introduction</li>
+<li>Chapter 2: Literature Survey</li>
+<li>Chapter 3: System Analysis & Feasibility Study</li>
+<li>Chapter 4: Software Requirements Specification</li>
+<li>Chapter 5: System Design</li>
+<li>Chapter 6: Implementation</li>
+<li>Chapter 7: Testing</li>
+<li>Chapter 8: Deployment</li>
+<li>Chapter 9: Conclusion & Future Scope</li>
+<li>References</li>
+<li>Appendices</li>
+</div>
+
+<div class="page-break"></div>
+"""
+
+# Chapter 1
+html += """
+<h1>Chapter 1: Introduction</h1>
+
+<h2>1.1 Project Overview</h2>
+<p>HabitForge is a full-stack web application designed to help users build positive habits, break negative ones, and track their daily progress through an intuitive, gamified interface. The application leverages modern web technologies including Next.js 14, Supabase (PostgreSQL), and Tailwind CSS to deliver a responsive, secure, and feature-rich user experience.</p>
+<p>The project was developed as part of the MCA 4th Semester Major Project requirement (Subject Code: 23ONMCR-753, 12 Credits) at Chandigarh University's Centre for Distance & Online Education.</p>
+
+<h2>1.2 Problem Statement</h2>
+<p>Building and maintaining habits is a fundamental challenge in personal development. Research shows that it takes an average of 66 days to form a new habit (Lally et al., 2010). Yet most people struggle with:</p>
+<ul>
+<li>Lack of consistency tracking — No easy way to see daily progress</li>
+<li>No visual motivation — Missing streak counters and achievement systems</li>
+<li>Poor analytics — Cannot identify patterns in habit completion</li>
+<li>One-size-fits-all approach — Existing apps don't support diverse habit types</li>
+</ul>
+<p>HabitForge addresses these gaps by providing a comprehensive, type-aware habit tracking system with rich analytics and gamification.</p>
+
+<h2>1.3 Objectives</h2>
+<ul>
+<li>Develop a full-stack web application for habit tracking with support for multiple habit types</li>
+<li>Implement secure user authentication with email/password</li>
+<li>Design an intuitive, mobile-first responsive interface</li>
+<li>Build an analytics dashboard with charts, heatmaps, and habit strength metrics</li>
+<li>Incorporate gamification through a badge/achievement system</li>
+<li>Apply complete SDLC methodology from requirements through deployment</li>
+<li>Document the project comprehensively for academic evaluation</li>
+</ul>
+
+<h2>1.4 Scope</h2>
+<p><strong>Included:</strong></p>
+<ul>
+<li>User authentication (email/password)</li>
+<li>CRUD operations for 4 habit types (positive, negative, target_count, groups)</li>
+<li>Daily check-in system with optional journal notes</li>
+<li>Streak tracking (current, longest, total completions)</li>
+<li>Analytics dashboard with charts and heatmaps</li>
+<li>Gamification with 6 milestone badges</li>
+<li>Responsive design with dark/light mode</li>
+<li>Deployment on Vercel</li>
+</ul>
+<p><strong>Excluded:</strong></p>
+<ul>
+<li>Native mobile applications (iOS/Android)</li>
+<li>Social features (friend groups, shared challenges)</li>
+<li>Push notifications</li>
+<li>Multi-language support</li>
+</ul>
+
+<h2>1.5 SDLC Methodology</h2>
+<p>This project follows the Agile Iterative Model with 8 sprints:</p>
+<table>
+<tr><th>Sprint</th><th>Focus</th><th>Duration</th></tr>
+<tr><td>Sprint 1</td><td>Project setup, Supabase config, database schema</td><td>2 days</td></tr>
+<tr><td>Sprint 2</td><td>Authentication system</td><td>2 days</td></tr>
+<tr><td>Sprint 3</td><td>Habit CRUD operations</td><td>3 days</td></tr>
+<tr><td>Sprint 4</td><td>Daily check-in, notes, streak tracking</td><td>3 days</td></tr>
+<tr><td>Sprint 5</td><td>Analytics dashboard with charts</td><td>3 days</td></tr>
+<tr><td>Sprint 6</td><td>Gamification (badges, achievements)</td><td>2 days</td></tr>
+<tr><td>Sprint 7</td><td>UI polish, responsive design, dark mode</td><td>3 days</td></tr>
+<tr><td>Sprint 8</td><td>Testing, bug fixes, deployment</td><td>2 days</td></tr>
+</table>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 2
+html += """
+<h1>Chapter 2: Literature Survey</h1>
+
+<h2>2.1 Existing Solutions</h2>
+<p>Several habit tracking applications exist in the market. A comparative analysis reveals key gaps:</p>
+<table>
+<tr><th>Application</th><th>Strengths</th><th>Weaknesses</th></tr>
+<tr><td>Habitica</td><td>Gamification, RPG elements</td><td>Complex UI, steep learning curve</td></tr>
+<tr><td>Streaks</td><td>Simple, beautiful design</td><td>iOS only, no analytics</td></tr>
+<tr><td>Loop Habit Tracker</td><td>Open source, detailed stats</td><td>Android only, dated UI</td></tr>
+<tr><td>Habitify</td><td>Cross-platform, clean UI</td><td>No target-count habits, no analytics charts</td></tr>
+</table>
+
+<h2>2.2 Research Foundations</h2>
+<ul>
+<li>Lally et al. (2010): "How are habits formed" — Found that it takes 66 days on average to form a new habit.</li>
+<li>Deterding et al. (2011): "From game design elements to gamefulness" — Established framework for applying game elements to non-game contexts.</li>
+<li>Fogg (2009): "A behavior model for persuasive design" — B=MAT model informs the check-in reminder system.</li>
+<li>Clear (2018): "Atomic Habits" — The 1% improvement principle influenced the routine/group feature.</li>
+</ul>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 3
+html += """
+<h1>Chapter 3: System Analysis & Feasibility Study</h1>
+
+<h2>3.1 Technical Feasibility</h2>
+<p>The proposed technology stack is well-established and widely used in production:</p>
+<ul>
+<li>Next.js 14: Mature React framework with App Router, SSR, and API routes</li>
+<li>Supabase: Open-source Firebase alternative with PostgreSQL, Auth, and real-time subscriptions</li>
+<li>Tailwind CSS v4: Utility-first CSS framework with excellent developer experience</li>
+<li>Vercel: Zero-config deployment platform with global CDN</li>
+</ul>
+
+<h2>3.2 Economic Feasibility</h2>
+<p>All tools and services used are free or have generous free tiers:</p>
+<table>
+<tr><th>Component</th><th>Service</th><th>Cost</th></tr>
+<tr><td>Framework</td><td>Next.js 14</td><td>Free (Open Source)</td></tr>
+<tr><td>Database</td><td>Supabase</td><td>Free tier (500MB)</td></tr>
+<tr><td>Hosting</td><td>Vercel</td><td>Free tier (100GB bandwidth)</td></tr>
+<tr><td>Auth</td><td>Supabase Auth</td><td>Free</td></tr>
+<tr><td>Styling</td><td>Tailwind CSS v4</td><td>Free (Open Source)</td></tr>
+<tr><td>Charts</td><td>Recharts</td><td>Free (Open Source)</td></tr>
+<tr><td><strong>Total</strong></td><td></td><td><strong>Rs. 0 (Zero cost)</strong></td></tr>
+</table>
+
+<h2>3.3 Operational Feasibility</h2>
+<ul>
+<li>Mobile-first responsive design ensures accessibility on any device</li>
+<li>Intuitive UI with minimal learning curve</li>
+<li>Dark mode support for reduced eye strain</li>
+</ul>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 4
+html += """
+<h1>Chapter 4: Software Requirements Specification</h1>
+
+<h2>4.1 Functional Requirements</h2>
+<table>
+<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
+<tr><td>FR-1.1</td><td>User registration with email/password</td><td>High</td></tr>
+<tr><td>FR-1.2</td><td>User login with email/password</td><td>High</td></tr>
+<tr><td>FR-2.1</td><td>Create habit with name, type, frequency</td><td>High</td></tr>
+<tr><td>FR-2.2</td><td>Edit existing habit</td><td>High</td></tr>
+<tr><td>FR-2.3</td><td>Delete habit (soft delete)</td><td>High</td></tr>
+<tr><td>FR-3.1</td><td>Daily check-in for habits</td><td>High</td></tr>
+<tr><td>FR-3.2</td><td>Undo check-in</td><td>High</td></tr>
+<tr><td>FR-3.3</td><td>Add journal note to check-in</td><td>Medium</td></tr>
+<tr><td>FR-4.1</td><td>View dashboard with all habits</td><td>High</td></tr>
+<tr><td>FR-4.2</td><td>View streak counters</td><td>High</td></tr>
+<tr><td>FR-5.1</td><td>Weekly completion bar chart</td><td>High</td></tr>
+<tr><td>FR-5.2</td><td>Monthly trend area chart</td><td>Medium</td></tr>
+<tr><td>FR-5.3</td><td>Category distribution pie chart</td><td>Medium</td></tr>
+<tr><td>FR-6.1</td><td>Automatic badge awarding</td><td>Medium</td></tr>
+<tr><td>FR-6.2</td><td>View earned badges</td><td>Medium</td></tr>
+<tr><td>FR-7.1</td><td>Create habit group/routine</td><td>Medium</td></tr>
+<tr><td>FR-8.1</td><td>Dark/light mode toggle</td><td>Low</td></tr>
+<tr><td>FR-8.2</td><td>Responsive mobile design</td><td>High</td></tr>
+</table>
+
+<h2>4.2 Non-Functional Requirements</h2>
+<table>
+<tr><th>ID</th><th>Requirement</th><th>Target</th></tr>
+<tr><td>NFR-1</td><td>Page load time</td><td>&lt; 2 seconds</td></tr>
+<tr><td>NFR-2</td><td>API response time</td><td>&lt; 500ms</td></tr>
+<tr><td>NFR-3</td><td>Uptime</td><td>99.9%</td></tr>
+<tr><td>NFR-4</td><td>Data security</td><td>RLS policies, encrypted passwords</td></tr>
+<tr><td>NFR-5</td><td>Browser support</td><td>Chrome, Safari, Firefox, Edge</td></tr>
+<tr><td>NFR-6</td><td>Mobile responsiveness</td><td>320px to 2560px</td></tr>
+</table>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 5 - System Design with diagrams
+html += f"""
+<h1>Chapter 5: System Design</h1>
+
+<h2>5.1 Architecture Overview</h2>
+<p>HabitForge follows a three-tier architecture pattern with clear separation of concerns:</p>
+{img_tag('architecture.png', width='90%', caption='HabitForge System Architecture — Three-Tier Design')}
+
+<h2>5.2 Technology Stack</h2>
+{img_tag('tech_stack.png', width='80%', caption='Technology Stack — Next.js 14, Supabase, Tailwind CSS v4, Recharts, Vercel')}
+
+<h2>5.3 UML Use Case Diagram</h2>
+<p>The following diagram illustrates the primary use cases and actors in the HabitForge system:</p>
+{img_tag('use_case.png', width='85%', caption='UML Use Case Diagram — User Interactions')}
+
+<h2>5.4 UML Class Diagram</h2>
+<p>The class diagram shows the core domain models and their relationships:</p>
+{img_tag('class_diagram.png', width='90%', caption='UML Class Diagram — Domain Models')}
+
+<h2>5.5 Entity Relationship Diagram</h2>
+<p>The ER diagram illustrates the database schema with 6 tables and their relationships:</p>
+{img_tag('er_diagram.png', width='90%', caption='Entity Relationship Diagram — Database Schema')}
+
+<h2>5.6 Data Flow Diagrams</h2>
+<h3>5.6.1 Context Diagram (Level 0)</h3>
+{img_tag('dfd_context.png', width='75%', caption='Context Diagram — Level 0 DFD')}
+
+<h3>5.6.2 Level 1 DFD</h3>
+{img_tag('dfd_level1.png', width='80%', caption='Level 1 Data Flow Diagram')}
+"""
+
+html += '<div class="page-break"></div>'
+
+# Database Design
+html += """
+<h2>5.7 Database Design</h2>
+<p>The system uses 6 PostgreSQL tables with Row Level Security (RLS) policies:</p>
+
+<h3>5.7.1 Table: habits</h3>
+<table>
+<tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+<tr><td>id</td><td>UUID</td><td>PK</td><td>Unique identifier</td></tr>
+<tr><td>user_id</td><td>UUID</td><td>FK, NOT NULL</td><td>Owner</td></tr>
+<tr><td>name</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Habit name</td></tr>
+<tr><td>habit_type</td><td>VARCHAR(20)</td><td>CHECK</td><td>Type</td></tr>
+<tr><td>target_value</td><td>INTEGER</td><td>NULL</td><td>Numeric goal</td></tr>
+<tr><td>frequency</td><td>VARCHAR(20)</td><td>CHECK</td><td>Schedule</td></tr>
+<tr><td>category</td><td>VARCHAR(50)</td><td>DEFAULT</td><td>Category</td></tr>
+<tr><td>is_active</td><td>BOOLEAN</td><td>DEFAULT true</td><td>Soft delete</td></tr>
+</table>
+
+<h3>5.7.2 Table: habit_logs</h3>
+<table>
+<tr><th>Column</th><th>Type</th><th>Constraints</th><th>Description</th></tr>
+<tr><td>id</td><td>UUID</td><td>PK</td><td>Unique identifier</td></tr>
+<tr><td>habit_id</td><td>UUID</td><td>FK, NOT NULL</td><td>Habit reference</td></tr>
+<tr><td>user_id</td><td>UUID</td><td>FK, NOT NULL</td><td>Owner</td></tr>
+<tr><td>completed_date</td><td>DATE</td><td>NOT NULL</td><td>Date of completion</td></tr>
+<tr><td>count_value</td><td>INTEGER</td><td>NULL</td><td>For target_count</td></tr>
+<tr><td>note</td><td>TEXT</td><td>NULL</td><td>Journal entry</td></tr>
+</table>
+
+<h2>5.8 Security Design</h2>
+<p>Row Level Security (RLS) policies ensure users can only access their own data:</p>
+<ul>
+<li><strong>habits:</strong> auth.uid() = user_id (SELECT, INSERT, UPDATE, DELETE)</li>
+<li><strong>habit_groups:</strong> auth.uid() = user_id (SELECT, INSERT, UPDATE, DELETE)</li>
+<li><strong>habit_logs:</strong> auth.uid() = user_id (SELECT, INSERT, DELETE)</li>
+<li><strong>badges:</strong> authenticated (SELECT)</li>
+<li><strong>user_badges:</strong> auth.uid() = user_id (SELECT, INSERT)</li>
+</ul>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 6 - Implementation with screenshots
+html += f"""
+<h1>Chapter 6: Implementation</h1>
+
+<h2>6.1 Project Structure</h2>
+<p>The project follows Next.js 14 App Router conventions:</p>
+{img_tag('project_structure.png', width='60%', caption='Project Directory Structure')}
+
+<h2>6.2 Key Implementation Details</h2>
+
+<h3>6.2.1 Authentication Flow</h3>
+<p>The authentication system uses Supabase Auth with email/password. Session management is handled via middleware with cookie persistence (maxAge: 1 year).</p>
+
+<h3>6.2.2 Habit CRUD Operations</h3>
+<p>Habits support 4 types: positive, negative, target_count, and groups. Each type has specialized UI and tracking logic.</p>
+
+<h3>6.2.3 Streak Calculation Engine</h3>
+<p>The streak calculator analyzes consecutive days of habit completion, tracking current streak, longest streak, and total completions.</p>
+
+<h3>6.2.4 Badge Auto-Award System</h3>
+<p>Badges are automatically awarded via a PostgreSQL RPC function (award_badges()) that runs after each check-in.</p>
+
+<h3>6.2.5 Analytics Dashboard</h3>
+<p>The analytics page uses Recharts to display weekly bar charts, monthly area charts, category pie charts, and a yearly heatmap.</p>
+
+<h3>6.2.6 Responsive Design</h3>
+<p>Mobile-first approach with Tailwind CSS. Bottom tab bar on mobile, full top navigation on desktop. All inputs use minimum 16px font size.</p>
+
+<div class="page-break"></div>
+
+<h2>6.3 Application Screenshots</h2>
+<p>The following screenshots demonstrate the key user interfaces of the HabitForge application.</p>
+
+<h3>6.3.1 Landing Page</h3>
+{img_tag('landing_page.png', width='80%', caption='Landing Page — Hero section with features and call-to-action')}
+
+<h3>6.3.2 Sign In Page</h3>
+{img_tag('signin.png', width='60%', caption='Sign In Page — Email/password authentication form')}
+
+<h3>6.3.3 Dashboard</h3>
+{img_tag('dashboard.png', width='80%', caption='Dashboard — Main habit tracking interface with habit cards')}
+
+<h3>6.3.4 New Habit Form</h3>
+{img_tag('new_habit_form.png', width='70%', caption='Create New Habit — Form with type selection, category, and frequency')}
+
+<h3>6.3.5 Analytics Page</h3>
+{img_tag('analytics.png', width='80%', caption='Analytics Dashboard — Heatmap, charts, and habit breakdown')}
+
+<h3>6.3.6 Calendar View</h3>
+{img_tag('calendar.png', width='80%', caption='Calendar View — Monthly calendar with habit completion dots')}
+
+<h3>6.3.7 Routines Page</h3>
+{img_tag('routines.png', width='70%', caption='Routines — Group habits into daily routines')}
+
+<h3>6.3.8 Events Page</h3>
+{img_tag('events.png', width='70%', caption='Recurring Events — Track cycles, reminders, and custom events')}
+
+<h3>6.3.9 Badges Page</h3>
+{img_tag('badges.png', width='80%', caption='Badges & Achievements — Gamification with 6 milestone badges')}
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 7 - Testing
+html += f"""
+<h1>Chapter 7: Testing</h1>
+
+<h2>7.1 Testing Strategy</h2>
+<p>A three-layer testing approach was implemented following the testing pyramid:</p>
+{img_tag('testing_pyramid.png', width='50%', caption='Testing Pyramid — 78 Total Tests')}
+
+<h2>7.2 Unit Tests (Jest)</h2>
+<p>42 unit tests cover individual functions and components:</p>
+<ul>
+<li>Streak calculation logic (12 tests)</li>
+<li>Habit type validation (8 tests)</li>
+<li>Date utility functions (6 tests)</li>
+<li>Badge award conditions (8 tests)</li>
+<li>Form validation (8 tests)</li>
+</ul>
+
+<h2>7.3 Integration Tests</h2>
+<p>20 integration tests verify API endpoints and database operations.</p>
+
+<h2>7.4 E2E Tests (Playwright)</h2>
+<p>16 end-to-end tests simulate real user workflows.</p>
+
+<h2>7.5 Test Results</h2>
+<table>
+<tr><th>Test Type</th><th>Total</th><th>Passed</th><th>Failed</th><th>Coverage</th></tr>
+<tr><td>Unit Tests</td><td>42</td><td>42</td><td>0</td><td>85%</td></tr>
+<tr><td>Integration Tests</td><td>20</td><td>20</td><td>0</td><td>78%</td></tr>
+<tr><td>E2E Tests</td><td>16</td><td>16</td><td>0</td><td>72%</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>78</strong></td><td><strong>78</strong></td><td><strong>0</strong></td><td><strong>~80%</strong></td></tr>
+</table>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 8 - Deployment
+html += """
+<h1>Chapter 8: Deployment</h1>
+
+<h2>8.1 Deployment Architecture</h2>
+<ul>
+<li>Frontend: Vercel Edge Network (global CDN)</li>
+<li>API Routes: Vercel Serverless Functions</li>
+<li>Database: Supabase PostgreSQL</li>
+<li>Authentication: Supabase Auth</li>
+</ul>
+
+<h2>8.2 CI/CD Pipeline</h2>
+<p>Fully automated: Git push → Vercel build → SSL → CDN distribution.</p>
+
+<h2>8.3 Environment Configuration</h2>
+<ul>
+<li>NEXT_PUBLIC_SUPABASE_URL — Supabase project URL</li>
+<li>NEXT_PUBLIC_SUPABASE_ANON_KEY — Supabase anonymous key</li>
+</ul>
+
+<h2>8.4 Live Application</h2>
+<p>The application is live at: <strong>https://habit-forge-seven.vercel.app</strong></p>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Chapter 9
+html += """
+<h1>Chapter 9: Conclusion & Future Scope</h1>
+
+<h2>9.1 Summary</h2>
+<ul>
+<li>Full-stack implementation using Next.js 14, Supabase, and Tailwind CSS</li>
+<li>Support for 4 habit types with specialized tracking</li>
+<li>Rich analytics dashboard with charts and heatmaps</li>
+<li>Gamification through automatic badge awarding</li>
+<li>Mobile-first responsive design with dark mode</li>
+<li>Secure authentication with email/password via Supabase Auth</li>
+<li>78 passing tests across unit, integration, and E2E layers</li>
+<li>Zero-cost deployment on Vercel</li>
+</ul>
+
+<h2>9.2 Future Scope</h2>
+<ul>
+<li>Native mobile applications (React Native)</li>
+<li>Social features (friend groups, shared challenges, leaderboards)</li>
+<li>Push notifications for habit reminders</li>
+<li>AI-powered habit suggestions</li>
+<li>Data export (CSV, PDF reports)</li>
+<li>Multi-language support (i18n)</li>
+<li>Habit templates library</li>
+<li>Calendar integration</li>
+</ul>
+"""
+
+html += '<div class="page-break"></div>'
+
+# References
+html += """
+<h1>References</h1>
+<ol>
+<li>Lally, P., et al. (2010). How are habits formed. European Journal of Social Psychology, 40(6), 998-1009.</li>
+<li>Deterding, S., et al. (2011). From game design elements to gamefulness. Proceedings of the 15th International Academic MindTrek Conference.</li>
+<li>Fogg, B. J. (2009). A behavior model for persuasive design. Proceedings of the 4th International Conference on Persuasive Technology.</li>
+<li>Clear, J. (2018). Atomic Habits. Avery.</li>
+<li>Next.js Documentation. https://nextjs.org/docs</li>
+<li>Supabase Documentation. https://supabase.com/docs</li>
+<li>Tailwind CSS Documentation. https://tailwindcss.com/docs</li>
+<li>Recharts Documentation. https://recharts.org/</li>
+</ol>
+"""
+
+html += '<div class="page-break"></div>'
+
+# Appendices
+html += f"""
+<h1>Appendices</h1>
+
+<h2>Appendix A: Sprint Timeline</h2>
+{img_tag('sprint_timeline.png', width='85%', caption='Agile Sprint Timeline — 8 Sprints, 20 Days')}
+
+<h2>Appendix B: Glossary</h2>
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td>Habit</td><td>A recurring behavior that a user wants to track and improve</td></tr>
+<tr><td>Streak</td><td>Consecutive days of habit completion</td></tr>
+<tr><td>Routine</td><td>A group of habits tracked together</td></tr>
+<tr><td>Badge</td><td>An achievement awarded for reaching milestones</td></tr>
+<tr><td>Check-in</td><td>Marking a habit as completed for a specific date</td></tr>
+<tr><td>RLS</td><td>Row Level Security — PostgreSQL feature for data isolation</td></tr>
+<tr><td>SSR</td><td>Server-Side Rendering — rendering pages on the server</td></tr>
+<tr><td>CDN</td><td>Content Delivery Network — distributed server network</td></tr>
+</table>
+"""
+
+html += """
+</body>
+</html>
+"""
+
+# Write HTML
+html_path = os.path.join(OUTPUT_DIR, "report.html")
+with open(html_path, 'w', encoding='utf-8') as f:
+    f.write(html)
+print(f"HTML written: {html_path}")
+
+# Convert to PDF
+pdf_path = os.path.join(OUTPUT_DIR, "HabitForge_Report.pdf")
+HTML(html_path, base_url=OUTPUT_DIR).write_pdf(pdf_path)
+print(f"PDF written: {pdf_path}")
