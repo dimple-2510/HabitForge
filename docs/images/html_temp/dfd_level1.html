@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #FAFBFC; padding: 40px; width: 1200px; }
+  .title { text-align: center; font-size: 22px; font-weight: 700; color: #1F2937; margin-bottom: 30px; }
+  .container { display: flex; gap: 40px; align-items: flex-start; justify-content: center; }
+  .column { display: flex; flex-direction: column; gap: 20px; align-items: center; }
+  .entity { padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; min-width: 140px; }
+  .user { background: #D1FAE5; border: 2px solid #059669; color: #065F46; }
+  .process { background: #DBEAFE; border: 2px solid #2563EB; color: #1E40AF; border-radius: 20px; }
+  .datastore { background: #F3F4F6; border: 2px solid #9CA3AF; color: #374151; border-radius: 4px; }
+  .label { font-size: 10px; color: #9CA3AF; text-align: center; margin-top: 4px; }
+  .arrow-down { font-size: 24px; color: #D1D5DB; text-align: center; }
+  .flow-label { font-size: 10px; color: #6B7280; text-align: center; padding: 2px 8px; background: white; border-radius: 4px; border: 1px solid #E5E7EB; }
+</style>
+</head>
+<body>
+<div class="title">Data Flow Diagram — Level 1</div>
+<div class="container">
+  <div class="column">
+    <div class="entity user">User</div>
+  </div>
+  <div class="column">
+    <div class="entity process">P1<br><span style="font-size:11px;font-weight:400;">Authentication</span></div>
+    <div class="arrow-down">↓</div>
+    <div class="entity process">P2<br><span style="font-size:11px;font-weight:400;">Habit CRUD</span></div>
+    <div class="arrow-down">↓</div>
+    <div class="entity process">P3<br><span style="font-size:11px;font-weight:400;">Check-in</span></div>
+    <div class="arrow-down">↓</div>
+    <div class="entity process">P4<br><span style="font-size:11px;font-weight:400;">Analytics</span></div>
+  </div>
+  <div class="column">
+    <div class="entity datastore">D1<br><span style="font-size:11px;font-weight:400;">Sessions</span></div>
+    <div class="entity datastore">D2<br><span style="font-size:11px;font-weight:400;">Habits DB</span></div>
+    <div class="entity datastore">D3<br><span style="font-size:11px;font-weight:400;">Logs DB</span></div>
+    <div class="entity datastore">D4<br><span style="font-size:11px;font-weight:400;">Badges DB</span></div>
+  </div>
+</div>
+</body>
+</html>

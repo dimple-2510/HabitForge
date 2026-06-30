@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #FAFBFC; padding: 40px; width: 1100px; }
+  .title { text-align: center; font-size: 22px; font-weight: 700; color: #1F2937; margin-bottom: 30px; }
+  .layer { border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .layer.client { background: #DBEAFE; border: 2px solid #2563EB; }
+  .layer.server { background: #EDE9FE; border: 2px solid #7C3AED; }
+  .layer.database { background: #D1FAE5; border: 2px solid #059669; }
+  .layer-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .layer.client .layer-title { color: #1E40AF; }
+  .layer.server .layer-title { color: #5B21B6; }
+  .layer.database .layer-title { color: #065F46; }
+  .components { display: flex; gap: 16px; justify-content: center; }
+  .component { background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px 16px; min-width: 160px; text-align: center; }
+  .component-name { font-size: 13px; font-weight: 700; color: #1F2937; margin-bottom: 4px; }
+  .component-desc { font-size: 10px; color: #6B7280; }
+  .arrow { text-align: center; font-size: 24px; color: #9CA3AF; margin: 8px 0; }
+</style>
+</head>
+<body>
+<div class="title">System Architecture — HabitForge</div>
+<div class="layer client">
+  <div class="layer-title">Client Layer</div>
+  <div class="components">
+    <div class="component">
+      <div class="component-name">Web Browser</div>
+      <div class="component-desc">Chrome, Safari, Firefox</div>
+    </div>
+    <div class="component">
+      <div class="component-name">Next.js 14</div>
+      <div class="component-desc">App Router, SSR, API Routes</div>
+    </div>
+    <div class="component">
+      <div class="component-name">Tailwind CSS v4</div>
+      <div class="component-desc">Responsive UI, Dark Mode</div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↕</div>
+<div class="layer server">
+  <div class="layer-title">Server Layer</div>
+  <div class="components">
+    <div class="component">
+      <div class="component-name">API Routes</div>
+      <div class="component-desc">RESTful Endpoints</div>
+    </div>
+    <div class="component">
+      <div class="component-name">Auth Middleware</div>
+      <div class="component-desc">Session Management</div>
+    </div>
+    <div class="component">
+      <div class="component-name">Recharts</div>
+      <div class="component-desc">Data Visualization</div>
+    </div>
+  </div>
+</div>
+<div class="arrow">↕</div>
+<div class="layer database">
+  <div class="layer-title">Database Layer</div>
+  <div class="components">
+    <div class="component">
+      <div class="component-name">Supabase</div>
+      <div class="component-desc">PostgreSQL, Auth, Storage</div>
+    </div>
+    <div class="component">
+      <div class="component-name">PostgreSQL</div>
+      <div class="component-desc">6 Tables, RLS Policies</div>
+    </div>
+    <div class="component">
+      <div class="component-name">Row Level Security</div>
+      <div class="component-desc">Per-user Data Isolation</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
